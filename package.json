@@ -1,0 +1,26 @@
+{
+  "name": "iptv-source-aggregator",
+  "version": "1.0.0",
+  "description": "GitHub-hosted IPTV source aggregator that monitors and aggregates live streaming channels from various sources",
+  "main": "index.js",
+  "scripts": {
+    "verify": "node scripts/verify-sources.mjs",
+    "generate": "node scripts/generate-playlist.mjs",
+    "test": "npm run verify && npm run generate"
+  },
+  "keywords": [
+    "iptv",
+    "live-streaming",
+    "m3u",
+    "channels",
+    "aggregator",
+    "tvbox",
+    "vlc",
+    "potplayer"
+  ],
+  "author": "IPTV Aggregator",
+  "license": "MIT",
+  "devDependencies": {
+    "node-fetch": "^3.3.2"
+  }
+}

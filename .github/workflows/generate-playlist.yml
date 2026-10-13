@@ -1,0 +1,57 @@
+name: Generate IPTV Playlist
+
+on:
+  schedule:
+    - cron: '0 */6 * * *'  # Every 6 hours
+  workflow_dispatch:      # Manual trigger
+  push:
+    branches: [ main ]
+    paths:
+      - 'config/sources.json'
+      - 'scripts/**'
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Generate IPTV playlist
+        run: node scripts/generate-playlist.mjs
+        env:
+          NODE_OPTIONS: --max-old-space-size=4096
+      
+      - name: Verify generated files
+        run: |
+          ls -la output/
+          head -n 5 output/iptv-aggregated.m3u
+          wc -l output/iptv-aggregated.txt
+      
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: iptv-playlist
+          path: output/
+          retention-days: 7
+      
+      - name: Deploy to GitHub Pages
+        if: github.ref == 'refs/heads/main'
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./output
+          keep_files: false
+          force_orphan: true
+          publish_branch: gh-pages
+          commit_message: 'chore: update playlist ${{ github.sha }}'

@@ -1,0 +1,62 @@
+{
+  "version": "1.0",
+  "description": "IPTV source configuration for aggregator",
+  "lastUpdated": "2024-12-01T00:00:00.000Z",
+  "sources": {
+    "builtin": {
+      "enabled": true,
+      "description": "Built-in single channel sources from iPTV project",
+      "url": "https://raw.githubusercontent.com/akiralereal/iptv/main/built-in-sources.json",
+      "type": "dynamic"
+    },
+    "iptv-main": {
+      "enabled": true,
+      "description": "Main IPTV playlist from iPTV project (domestic/selected channels)",
+      "url": "https://raw.githubusercontent.com/akiralereal/iptv/main/IPTV.m3u",
+      "type": "static"
+    },
+    "iptv-overseas": {
+      "enabled": true,
+      "description": "Overseas channels playlist from iPTV project (international/FAST channels)",
+      "url": "https://raw.githubusercontent.com/akiralereal/iptv/main/IPTV-overseas.m3u",
+      "type": "static"
+    },
+    "external-sources": {
+      "enabled": true,
+      "description": "External sources example from iPTV project",
+      "url": "https://raw.githubusercontent.com/akiralereal/iptv/main/external-sources.json.example",
+      "type": "dynamic"
+    }
+  },
+  "output": {
+    "playlist": "iptv-aggregated.m3u",
+    "txt": "iptv-aggregated.txt",
+    "json": "channels.json"
+  },
+  "verification": {
+    "timeout": 10000,
+    "maxRetries": 3,
+    "userAgent": "IPTV-Aggregator/1.0 (+https://github.com/akiralereal/iptv)",
+    "concurrency": 5,
+    "validateHls": true,
+    "minBitrate": 500000
+  },
+  "categories": {
+    "国内卫视": ["卫视", "CCTV", "央视", "省级", "卫星"],
+    "地方频道": ["地方", "市级", "区县", "江苏", "浙江", "广东", "四川", "福建", "山东", "河南", "湖北", "湖南", "河北", "陕西", "安徽", "辽宁", "黑龙江", "吉林", "云南", "贵州", "甘肃", "青海", "新疆", "西藏", "宁夏", "海南", "内蒙古", "广西"],
+    "港澳台": ["香港", "台湾", "澳门", "凤凰", "TVB", "TVBS", "民视", "台视", "公视", "大立", "纬来", "iPanda"],
+    "国际频道": ["国际", "海外", "CGTN", "NHK", "YTN", "France 24", "Reuters", "CNA", "DW", "Al Jazeera", "Bloomberg", "NASA", "Thai PBS", "TRT", "Arirang"],
+    "体育赛事": ["体育", "Sports", "ESPN", "纬来体育", "广东体育", "NBA", "CBA", "足球", "赛事", "UFC", "NHL", "FIFA", "Racing", "FloRacing", "FUEL TV", "MTRSPT1"],
+    "影视娱乐": ["影视", "电影", "电视剧", "娱乐", "综艺", "少儿", "动画", "卡通", "FashionTV", "Qello", "Wipeout", "Graham Norton", "Mystery", "Estrella", "Global Fashion"],
+    "纪实文旅": ["文旅", "纪录", "纪实", "自然", "野生", "旅游", "风景", "Love Nature", "WildEarth", "Pet Club", "CGTN Documentary", "China Travel", "Red Bull"],
+    "新闻资讯": ["新闻", "资讯", "财经", "News", "CNA", "Reuters", "France 24", "DW", "Bloomberg", "耀才财经", "CGTN"],
+    "直播平台": ["B站", "抖音", "虎牙", "斗鱼", "快手", "哔哩哔哩", "直播", "Live"],
+    "其他": []
+  },
+  "filters": {
+    "excludeGroups": ["公告", "Announcement"],
+    "excludeKeywords": ["测试", "test", "Test", "TEST", "失效", "下线", "offline", "停播"],
+    "minQuality": "480p",
+    "preferHd": true
+  }
+}
