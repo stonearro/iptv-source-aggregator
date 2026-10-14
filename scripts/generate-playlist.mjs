@@ -24,37 +24,87 @@ function parseM3U(content, sourceName = 'Unknown') {
   let currentChannel = null;
   
   for (let i = 0; i < lines.length; i++) {
-    const line = lines[i].trim();
+    let line = lines[i].trim();
     
     // Skip empty lines and comments (except EXTINF)
-    if (!line || line.startsWith('#') && !line.startsWith('#EXTINF:')) continue;
+    if (!line || (line.startsWith('#') && !line.startsWith('#EXTINF:'))) {
+      continue;
+    }
     
     if (line.startsWith('#EXTINF:')) {
-      // Parse EXTINF line
-      const match = line.match(/#EXTINF:(-?\d+)\s+([^?]*)(\?[^#]*)?(?:#EXTVLCOPT:[^=]*=[^\n]*)*\s*([^\n]*)/);
-      if (match) {
-        const duration = match[1];
-        let attributes = {};
-        const attrPart = match[2] || '';
+      // Parse EXTINF line: #EXTINF:<duration>[,<channel name>]
+      // Optional attributes can appear between duration and channel name
+      const extinfMatch = line.match(/^#EXTINF:(-?\d+)(?:[^,]*,)?(.*)$/);
+      if (extinfMatch) {
+        const duration = extinfMatch[1];
+        let afterDuration = extinfMatch[2] || ''; // This contains attributes and channel name
+        
+        // Now we need to split attributes from the actual channel name
+        // The channel name is everything after the last comma that's not inside quotes
+        // But for simplicity, we'll assume the channel name is after the last comma
+        const lastCommaIndex = afterDuration.lastIndexOf(',');
+        let channelName = '';
+        let attributesStr = '';
+        
+        if (lastCommaIndex !== -1) {
+          channelName = afterDuration.substring(lastCommaIndex + 1).trim();
+          attributesStr = afterDuration.substring(0, lastCommaIndex).trim();
+        } else {
+          // No comma found, treat everything as channel name
+          channelName = afterDuration.trim();
+        }
+        
+        // Parse attributes from attributesStr
+        const attributes = {};
         
         // Extract group-title
-        const groupMatch = attrPart.match(/group-title="([^"]*)"/);
-        attributes.groupTitle = groupMatch ? groupMatch[1] : 'Unknown';
+        const groupMatch = attributesStr.match(/group-title="([^"]*)"/);
+        if (groupMatch) {
+          attributes.groupTitle = groupMatch[1];
+        }
         
         // Extract tvg-name
-        const nameMatch = attrPart.match(/tvg-name="([^"]*)"/);
-        attributes.tvgName = nameMatch ? nameMatch[1] : '';
+        const tvgNameMatch = attributesStr.match(/tvg-name="([^"]*)"/);
+        if (tvgNameMatch) {
+          attributes.tvgName = tvgNameMatch[1];
+        }
         
         // Extract tvg-logo
-        const logoMatch = attrPart.match(/tvg-logo="([^"]*)"/);
-        attributes.tvgLogo = logoMatch ? logoMatch[1] : '';
+        const tvgLogoMatch = attributesStr.match(/tvg-logo="([^"]*)"/);
+        if (tvgLogoMatch) {
+          attributes.tvgLogo = tvgLogoMatch[1];
+        }
         
-        // Extract channel name (after attributes)
-        const namePart = attrPart.split(',').pop() || '';
-        attributes.tvgName = attributes.tvgName || namePart.trim();
-        if (!attributes.groupTitle) attributes.groupTitle = 'Unknown';
+        // If we still don't have a channel name from the attributes parsing,
+        // use what we extracted after the last comma
+        if (!channelName) {
+          channelName = '';
+        }
         
-        currentChannel = attributes;
+        // Determine the final channel name to use
+        let finalName = channelName;
+        if (!finalName || finalName.trim() === '') {
+          // Try to use tvg-name
+          finalName = attributes.tvgName || '';
+        }
+        if (!finalName || finalName.trim() === '') {
+          // Try to use group-title
+          finalName = attributes.groupTitle || '';
+        }
+        if (!finalName || finalName.trim() === '') {
+          // Default
+          finalName = '未知频道';
+        }
+        
+        finalName = finalName.trim();
+        
+        currentChannel = {
+          url: '',
+          groupTitle: attributes.groupTitle || 'Unknown',
+          tvgName: attributes.tvgName || '',
+          tvgLogo: attributes.tvgLogo || '',
+          name: finalName // This is what will be displayed
+        };
       }
     } else if (line && line.match(/^https?:\/\//)) {
       // This is a URL line
@@ -110,170 +160,105 @@ async function fetchSources() {
       }, config.verification.timeout);
       
       if (!response.ok) {
-        console.error(`  Failed to fetch ${source.url}: ${response.status} ${response.statusText}`);
-        fetchedSources.push({
-          id: sourceId,
-          url: source.url,
-          channelCount: 0,
-          type: source.type,
-          error: `HTTP ${response.status}`
-        });
+        console.error(`Failed to fetch ${sourceId}: ${response.status} ${response.statusText}`);
         continue;
       }
       
       const content = await response.text();
-      let channelCount = 0;
-      
-      if (source.type === 'static' && content.includes('#EXTM3U')) {
-        const channels = parseM3U(content, source.description || sourceId);
-        allChannels.push(...channels);
-        channelCount = channels.length;
-        fetchedSources.push({
-          id: sourceId,
-          url: source.url,
-          channelCount,
-          type: 'm3u'
-        });
-      } else if (source.type === 'dynamic') {
-        // Handle JSON format
-        try {
-          const data = JSON.parse(content);
-          if (data.sources) {
-            console.log(`  ${sourceId} has ${Object.keys(data.sources).length} source configurations`);
-          }
-          fetchedSources.push({
-            id: sourceId,
-            url: source.url,
-            channelCount: 0,
-            type: 'dynamic'
-          });
-        } catch (parseError) {
-          console.error(`  Failed to parse JSON from ${sourceId}: ${parseError.message}`);
-          fetchedSources.push({
-            id: sourceId,
-            url: source.url,
-            channelCount: 0,
-            type: 'dynamic',
-            error: 'JSON parse failed'
-          });
-        }
-      } else {
-        console.warn(`  Unknown source type or invalid content for ${sourceId}`);
-        fetchedSources.push({
-          id: sourceId,
-          url: source.url,
-          channelCount: 0,
-          type: source.type,
-          error: 'Invalid content format'
-        });
-      }
-      
-      console.log(`  Added ${channelCount} channels`);
-    } catch (error) {
-      console.error(`  Error fetching ${sourceId}: ${error.message}`);
+      const channels = parseM3U(content, source.name || sourceId);
+      allChannels.push(...channels);
       fetchedSources.push({
         id: sourceId,
+        name: source.name || sourceId,
         url: source.url,
-        channelCount: 0,
-        type: source.type,
-        error: error.message
+        channelCount: channels.length
       });
+      
+      console.log(`Successfully fetched ${sourceId}: ${channels.length} channels`);
+    } catch (error) {
+      console.error(`Error fetching ${sourceId}:`, error.message);
     }
   }
   
   return { allChannels, fetchedSources };
 }
 
-// Generate M3U playlist
-function generateM3U(channels, config) {
-  const header = `#EXTM3U
-# Generated: ${new Date().toISOString()}
-# Version: ${config.version}
-# Source: https://github.com/akiralereal/iptv-aggregator
-# Total Channels: ${channels.length}
-
-`;
-  
-  let playlist = header;
+// Generate M3U playlist with proper formatting for VLC
+function generateM3U(channels) {
+  let m3uContent = '#EXTM3U\n';
   
   for (const channel of channels) {
-    const attributes = [];
+    // Use the name we determined during parsing
+    let displayName = channel.name || '未知频道';
     
-    // Add group
-    const group = channel.groupTitle || 'Unknown';
-    attributes.push(`group-title="${group}"`);
-    
-    // Add TVG name if available
-    if (channel.tvgName) {
-      attributes.push(`tvg-name="${channel.tvgName}"`);
+    // Ensure it's not empty
+    if (!displayName || displayName.trim() === '') {
+      displayName = '未知频道';
     }
     
-    // Add logo if available
-    if (channel.tvgLogo) {
-      attributes.push(`tvg-logo="${channel.tvgLogo}"`);
+    displayName = displayName.trim();
+    
+    // Build EXTINF line
+    let extinf = '#EXTINF:-1';
+    
+    // Add group-title if available and meaningful
+    if (channel.groupTitle && channel.groupTitle !== 'Unknown' && channel.groupTitle.trim() !== '') {
+      extinf += ` group-title="${channel.groupTitle.trim()}"`;
     }
     
-    // Add TVG shift if available
-    if (channel.tvgShift) {
-      attributes.push(`tvg-shift=${channel.tvgShift}`);
-    }
+    // Add the channel name after the comma
+    extinf += `,${displayName}`;
     
-    const extinf = `#EXTINF:-1 ${attributes.join(' ')}${channel.url ? '' : ''}`;
-    playlist += `${extinf}\n`;
-    
-    if (channel.url) {
-      playlist += `${channel.url}\n`;
-    }
-    
-    playlist += '\n';
+    m3uContent += `${extinf}\n${channel.url}\n`;
   }
   
-  return playlist;
+  return m3uContent;
 }
 
-// Main execution
+// Generate JSON index
+function generateJSONIndex(channels, sources) {
+  return {
+    version: "1.0",
+    generated: new Date().toISOString(),
+    totalChannels: channels.length,
+    sources: sources.map(s => ({
+      id: s.id,
+      name: s.name,
+      url: s.url,
+      channelCount: s.channelCount,
+      type: s.type || 'unknown'
+    })),
+    channels: channels.map(c => ({
+      name: c.name,
+      group: c.groupTitle,
+      logo: c.tvgLogo,
+      url: c.url,
+      source: c.source
+    }))
+  };
+}
+
+// Main function
 async function main() {
-  console.log('IPTV Source Aggregator - Generating playlist...\n');
+  console.log('Starting IPTV playlist generation...');
   
   const { allChannels, fetchedSources } = await fetchSources();
   
+  if (allChannels.length === 0) {
+    throw new Error('No channels fetched from any source');
+  }
+  
   console.log(`\nTotal channels fetched: ${allChannels.length}`);
-  console.log('Sources processed:', fetchedSources.length);
   
-  // Generate M3U
-  const m3uContent = generateM3U(allChannels, config);
-  const m3uPath = join(OUTPUT_DIR, config.output.playlist);
+  // Generate M3U playlist
+  const m3uContent = generateM3U(allChannels);
+  const m3uPath = join(OUTPUT_DIR, 'iptv-aggregated.m3u');
   writeFileSync(m3uPath, m3uContent);
-  console.log(`\nM3U playlist saved: ${m3uPath}`);
-  
-  // Generate TXT version
-  const txtContent = allChannels.map(c => {
-    const group = c.groupTitle || 'Unknown';
-    const name = c.tvgName || group;
-    const url = c.url || '# No URL';
-    return `${name} | ${group} | ${url}`;
-  }).join('\n');
-  
-  const txtPath = join(OUTPUT_DIR, config.output.txt);
-  writeFileSync(txtPath, txtContent);
-  console.log(`TXT playlist saved: ${txtPath}`);
+  console.log(`M3U playlist saved: ${m3uPath}`);
   
   // Generate JSON index
-  const jsonContent = {
-    version: config.version,
-    generated: new Date().toISOString(),
-    totalChannels: allChannels.length,
-    sources: fetchedSources,
-    channels: allChannels.map(c => ({
-      name: c.tvgName || c.groupTitle || 'Unknown',
-      group: c.groupTitle || 'Unknown',
-      logo: c.tvgLogo || '',
-      url: c.url || '',
-      source: c.source || ''
-    }))
-  };
-  
-  const jsonPath = join(OUTPUT_DIR, config.output.json);
+  const jsonContent = generateJSONIndex(allChannels, fetchedSources);
+  const jsonPath = join(OUTPUT_DIR, 'channels.json');
   writeFileSync(jsonPath, JSON.stringify(jsonContent, null, 2));
   console.log(`JSON index saved: ${jsonPath}`);
   
