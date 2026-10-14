@@ -1,0 +1,629 @@
+{
+  "version": "1.0",
+  "generated": "2026-10-14T12:12:23.405Z",
+  "totalChannels": 86,
+  "sources": [
+    {
+      "id": "builtin",
+      "name": "builtin",
+      "url": "https://raw.githubusercontent.com/akiralereal/iptv/main/built-in-sources.json",
+      "channelCount": 0,
+      "type": "unknown"
+    },
+    {
+      "id": "iptv-main",
+      "name": "iptv-main",
+      "url": "https://raw.githubusercontent.com/akiralereal/iptv/main/IPTV.m3u",
+      "channelCount": 34,
+      "type": "unknown"
+    },
+    {
+      "id": "iptv-overseas",
+      "name": "iptv-overseas",
+      "url": "https://raw.githubusercontent.com/akiralereal/iptv/main/IPTV-overseas.m3u",
+      "channelCount": 42,
+      "type": "unknown"
+    },
+    {
+      "id": "external-sources",
+      "name": "external-sources",
+      "url": "https://raw.githubusercontent.com/akiralereal/iptv/main/external-sources.json.example",
+      "channelCount": 0,
+      "type": "unknown"
+    }
+  ],
+  "channels": [
+    {
+      "name": "湖南卫视4K",
+      "group": "Unknown",
+      "logo": "",
+      "url": "http://hlsal-ldvt.qing.mgtv.com/nn_live/nn_x64/Y2RuZXhfaWQ9YWxfaGxzX2xkdnQmZT02OTE0NjA0JnY9MSZpZD1ITldTWkdTVCZzPTcwN2RiYTc2YzJjNmJmMTQ4MmUyZGYzOWU2NWM3YWFi/HNWSZGST.m3u8",
+      "source": "iptv-main"
+    },
+    {
+      "name": "浙江卫视4K",
+      "group": "Unknown",
+      "logo": "",
+      "url": "http://ali-xwl.cztv.com/live/channel4k2160p.m3u8",
+      "source": "iptv-main"
+    },
+    {
+      "name": "凤凰中文",
+      "group": "Unknown",
+      "logo": "",
+      "url": "http://zmgd.zyrnet.com:8888/hls/110/index.m3u8",
+      "source": "iptv-main"
+    },
+    {
+      "name": "凤凰资讯",
+      "group": "Unknown",
+      "logo": "",
+      "url": "http://zmgd.zyrnet.com:8888/hls/109/index.m3u8",
+      "source": "iptv-main"
+    },
+    {
+      "name": "凤凰香港",
+      "group": "Unknown",
+      "logo": "",
+      "url": "https://cdn.qd.je/163189/fhhk",
+      "source": "iptv-main"
+    },
+    {
+      "name": "纬来体育",
+      "group": "Unknown",
+      "logo": "",
+      "url": "https://hlsz.yjjcfw.com/live/vl.m3u8?expire=1786948372&sign=2e4a56b89fe644db147552011f972714",
+      "source": "iptv-main"
+    },
+    {
+      "name": "翡翠台",
+      "group": "Unknown",
+      "logo": "",
+      "url": "https://cdn3.indevs.in/stream/tvb/fct/",
+      "source": "iptv-main"
+    },
+    {
+      "name": "公视高清",
+      "group": "Unknown",
+      "logo": "",
+      "url": "http://211.72.174.95:8116/0.ts",
+      "source": "iptv-main"
+    },
+    {
+      "name": "民视高清",
+      "group": "Unknown",
+      "logo": "",
+      "url": "http://211.72.174.95:8115/0.ts",
+      "source": "iptv-main"
+    },
+    {
+      "name": "台视高清",
+      "group": "Unknown",
+      "logo": "",
+      "url": "http://211.72.174.95:8112/0.ts",
+      "source": "iptv-main"
+    },
+    {
+      "name": "TVBS亚洲",
+      "group": "Unknown",
+      "logo": "",
+      "url": "http://38.64.72.148/hls/modn/list/4005/playlist.m3u8",
+      "source": "iptv-main"
+    },
+    {
+      "name": "耀才财经",
+      "group": "Unknown",
+      "logo": "",
+      "url": "https://v3.mediacast.hk/webcast/bshdlive-pc/playlist.m3u8",
+      "source": "iptv-main"
+    },
+    {
+      "name": "Pet Club TV",
+      "group": "Unknown",
+      "logo": "",
+      "url": "https://petclub-samsungaus.amagi.tv/playlist1080p.m3u8",
+      "source": "iptv-main"
+    },
+    {
+      "name": "WildEarth",
+      "group": "Unknown",
+      "logo": "",
+      "url": "https://wildearth-plex.amagi.tv/masterR1080p.m3u8",
+      "source": "iptv-main"
+    },
+    {
+      "name": "Love Nature 4K",
+      "group": "Unknown",
+      "logo": "",
+      "url": "https://pb-ehs1glsha1juy.akamaized.net/v1/manifest/3722c60a815c199d9c0ef36c5b73da68a62b09d1/pb-ehs1glsha1juy/f2141f37-1f48-475b-ba54-b9efb62346db/0.m3u8",
+      "source": "iptv-main"
+    },
+    {
+      "name": "CGTN Documentary",
+      "group": "Unknown",
+      "logo": "",
+      "url": "https://english-livebkali.cgtn.com/live/doccgtn.m3u8",
+      "source": "iptv-main"
+    },
+    {
+      "name": "CNA",
+      "group": "Unknown",
+      "logo": "",
+      "url": "https://d2e1asnsl7br7b.cloudfront.net/7782e205e72f43aeb4a48ec97f66ebbe/index_5.m3u8",
+      "source": "iptv-main"
+    },
+    {
+      "name": "Reuters",
+      "group": "Unknown",
+      "logo": "",
+      "url": "https://dbrb49pjoymg4.cloudfront.net/manifest/3fec3e5cac39a52b2132f9c66c83dae043dc17d4/prod_default_xumo-ams-aws/e7493ea5-5c1c-4d7a-a3f7-e95516048ad8/3.m3u8",
+      "source": "iptv-main"
+    },
+    {
+      "name": "France 24 Français",
+      "group": "Unknown",
+      "logo": "",
+      "url": "https://live.france24.com/hls/live/2037179-b/F24_FR_HI_HLS/master_5000.m3u8",
+      "source": "iptv-main"
+    },
+    {
+      "name": "France 24 English",
+      "group": "Unknown",
+      "logo": "",
+      "url": "https://live.france24.com/hls/live/2037218-b/F24_EN_HI_HLS/master_5000.m3u8",
+      "source": "iptv-main"
+    },
+    {
+      "name": "World Poker Tour",
+      "group": "Unknown",
+      "logo": "",
+      "url": "https://amg00477-samsungelectron-worldpokertour-samsunguk-81igb.amagi.tv/playlist/amg00477-samsungelectron-worldpokertour-samsunguk/playlist.m3u8",
+      "source": "iptv-main"
+    },
+    {
+      "name": "Red Bull TV",
+      "group": "Unknown",
+      "logo": "",
+      "url": "https://rbmn-live.akamaized.net/hls/live/590964/BoRB-AT/master_6660.m3u8",
+      "source": "iptv-main"
+    },
+    {
+      "name": "NHL FAST",
+      "group": "Unknown",
+      "logo": "",
+      "url": "https://nhl-firetv.amagi.tv/playlist1080p.m3u8",
+      "source": "iptv-main"
+    },
+    {
+      "name": "UFC 24/7",
+      "group": "Unknown",
+      "logo": "",
+      "url": "https://dbrb49pjoymg4.cloudfront.net/manifest/3fec3e5cac39a52b2132f9c66c83dae043dc17d4/prod_default_xumo-ams-aws/194a140c-0cf5-443e-b747-08bf621d75a8/0.m3u8",
+      "source": "iptv-main"
+    },
+    {
+      "name": "China Travel",
+      "group": "Unknown",
+      "logo": "",
+      "url": "https://fastlive.cctvplus.com/out/v1/ca6f9297b7314a63959435028af287fc/index.m3u8",
+      "source": "iptv-main"
+    },
+    {
+      "name": "大立电视台",
+      "group": "Unknown",
+      "logo": "",
+      "url": "http://www.dalitv.com.tw:4568/live/dali/index.m3u8",
+      "source": "iptv-main"
+    },
+    {
+      "name": "苏州新闻综合",
+      "group": "Unknown",
+      "logo": "",
+      "url": "https://live-auth.51kandianshi.com/szgd/csztv1.m3u8",
+      "source": "iptv-main"
+    },
+    {
+      "name": "苏州社会经济",
+      "group": "Unknown",
+      "logo": "",
+      "url": "https://live-auth.51kandianshi.com/szgd/csztv2.m3u8",
+      "source": "iptv-main"
+    },
+    {
+      "name": "苏州文化生活",
+      "group": "Unknown",
+      "logo": "",
+      "url": "https://live-auth.51kandianshi.com/szgd/csztv3.m3u8",
+      "source": "iptv-main"
+    },
+    {
+      "name": "苏州电影娱乐",
+      "group": "Unknown",
+      "logo": "",
+      "url": "https://live-auth.51kandianshi.com/szgd/csztv4.m3u8",
+      "source": "iptv-main"
+    },
+    {
+      "name": "苏州生活资讯",
+      "group": "Unknown",
+      "logo": "",
+      "url": "https://live-auth.51kandianshi.com/szgd/csztv5.m3u8",
+      "source": "iptv-main"
+    },
+    {
+      "name": "苏州4K",
+      "group": "Unknown",
+      "logo": "",
+      "url": "https://live-auth.51kandianshi.com/szgd/csztv4k_4k.m3u8",
+      "source": "iptv-main"
+    },
+    {
+      "name": "德化电视台",
+      "group": "Unknown",
+      "logo": "",
+      "url": "https://play.cmptp.fjgdwl.com/live/63a563ec75764af588f3215b0afa2588.m3u8",
+      "source": "iptv-main"
+    },
+    {
+      "name": "西宁新闻综合",
+      "group": "Unknown",
+      "logo": "",
+      "url": "https://liveout.xntv.tv/a65jur/96iln2.m3u8",
+      "source": "iptv-main"
+    },
+    {
+      "name": "Sky Racing 1",
+      "group": "Unknown",
+      "logo": "",
+      "url": "https://636ffd31f0e12.streamlock.net/RacingStream1/RacingStream1/playlist.m3u8",
+      "source": "iptv-overseas"
+    },
+    {
+      "name": "Sky Racing 2",
+      "group": "Unknown",
+      "logo": "",
+      "url": "https://636ffd31f0e12.streamlock.net/RacingStream2/RacingStream2/playlist.m3u8",
+      "source": "iptv-overseas"
+    },
+    {
+      "name": "World of Freesports",
+      "group": "Unknown",
+      "logo": "",
+      "url": "https://mainstreammedia-worldoffreesportsintl-rakuten.amagi.tv/1080p-en/index.m3u8",
+      "source": "iptv-overseas"
+    },
+    {
+      "name": "FUEL TV",
+      "group": "Unknown",
+      "logo": "",
+      "url": "https://amg01074-fueltv-fueltvemeaen-rakuten-b6j62.amagi.tv/hls/amagi_hls_data_rakutenAA-fueltvemeaen/CDN/master.m3u8",
+      "source": "iptv-overseas"
+    },
+    {
+      "name": "FloRacing",
+      "group": "Unknown",
+      "logo": "",
+      "url": "https://amg02278-amg02278c1-flosports-worldwide-7592.playouts.now.amagi.tv/1080p-cc/index.m3u8",
+      "source": "iptv-overseas"
+    },
+    {
+      "name": "SportsGrid",
+      "group": "Unknown",
+      "logo": "",
+      "url": "https://sportsgrid-tribal.amagi.tv/playlist1080p.m3u8",
+      "source": "iptv-overseas"
+    },
+    {
+      "name": "ACCDN",
+      "group": "Unknown",
+      "logo": "",
+      "url": "https://raycom-accdn-firetv.amagi.tv/1080p-cc/index.m3u8",
+      "source": "iptv-overseas"
+    },
+    {
+      "name": "Pac-12 Insider",
+      "group": "Unknown",
+      "logo": "",
+      "url": "https://pac12-firetv.amagi.tv/1080p-en-cc/index.m3u8",
+      "source": "iptv-overseas"
+    },
+    {
+      "name": "Trace Sport Stars",
+      "group": "Unknown",
+      "logo": "",
+      "url": "https://lightning-tracesport-samsungau.amagi.tv/playlist1080p.m3u8",
+      "source": "iptv-overseas"
+    },
+    {
+      "name": "beIN Sports Xtra",
+      "group": "Unknown",
+      "logo": "",
+      "url": "https://bein-xtra-bein.amagi.tv/playlistR1080p.m3u8",
+      "source": "iptv-overseas"
+    },
+    {
+      "name": "FIFA+",
+      "group": "Unknown",
+      "logo": "",
+      "url": "https://d2w9q46ikgrcwx.cloudfront.net/v1/master/3722c60a815c199d9c0ef36c5b73da68a62b09d1/cc-of5cbk3sav3w5/v1/sysdata_s_p_a_fifa_7/samsungheadend_us/latest/main/hls/playlist.m3u8",
+      "source": "iptv-overseas"
+    },
+    {
+      "name": "Tennis Channel International",
+      "group": "Unknown",
+      "logo": "",
+      "url": "https://cdn-uw2-prod.tsv2.amagi.tv/linear/amg01444-tennischannelth-tennischnlintl-lggb/playlist.m3u8",
+      "source": "iptv-overseas"
+    },
+    {
+      "name": "MTRSPT1",
+      "group": "Unknown",
+      "logo": "",
+      "url": "https://amg02873-kravemedia-mtrspt1-samsungau-2anp4.amagi.tv/playlist/amg02873-kravemedia-mtrspt1-samsungau/playlist.m3u8",
+      "source": "iptv-overseas"
+    },
+    {
+      "name": "FashionTV Paris L'Original",
+      "group": "Unknown",
+      "logo": "",
+      "url": "https://ftv1.b-cdn.net/bfdbb576-83f7-11f0-9f89-0200170e3e04_1000028043_HLS/manifest.m3u8",
+      "source": "iptv-overseas"
+    },
+    {
+      "name": "Global Fashion Channel",
+      "group": "Unknown",
+      "logo": "",
+      "url": "https://pubgfc.teleosmedia.com/linear/globalfashionchannel/globalfashionchannel/playlist.m3u8",
+      "source": "iptv-overseas"
+    },
+    {
+      "name": "Qello Concerts",
+      "group": "Unknown",
+      "logo": "",
+      "url": "https://lotus.stingray.com/manifest/qello-qello001-montreal/samsungtvplus/master.m3u8",
+      "source": "iptv-overseas"
+    },
+    {
+      "name": "Totalmusic Concerts",
+      "group": "Unknown",
+      "logo": "",
+      "url": "https://cdn.40mediagroup.com/live/c7eds/Totalmusic_Concerts/SA_LIVE_hls_enc/master.m3u8",
+      "source": "iptv-overseas"
+    },
+    {
+      "name": "Wipeout Xtra",
+      "group": "Unknown",
+      "logo": "",
+      "url": "https://amg00627-banijaygroup-wipeoutxtraau-samsungau-ashbl.amagi.tv/playlist/amg00627-banijaygroup-wipeoutxtraau-samsungau/playlist.m3u8",
+      "source": "iptv-overseas"
+    },
+    {
+      "name": "Graham Norton",
+      "group": "Unknown",
+      "logo": "",
+      "url": "https://amg00654-itv-amg00654c35-rakuten-gb-7598.playouts.now.amagi.tv/playlist1080_p.m3u8",
+      "source": "iptv-overseas"
+    },
+    {
+      "name": "Mystery TV",
+      "group": "Unknown",
+      "logo": "",
+      "url": "https://aenetworks-mysterytv-rakuten.amagi.tv/1080p-vtt/index.m3u8",
+      "source": "iptv-overseas"
+    },
+    {
+      "name": "Estrella TV",
+      "group": "Unknown",
+      "logo": "",
+      "url": "https://estrellatv-oando.amagi.tv/playlistR1080p.m3u8",
+      "source": "iptv-overseas"
+    },
+    {
+      "name": "MovieSphere",
+      "group": "Unknown",
+      "logo": "",
+      "url": "https://amg00353-lionsgatefilmsi-moviesphereaus-samsungau-7qzhf.amagi.tv/playlist/amg00353-lionsgatefilmsi-moviesphereaus-samsungau/playlist.m3u8",
+      "source": "iptv-overseas"
+    },
+    {
+      "name": "Rai Italia",
+      "group": "Unknown",
+      "logo": "",
+      "url": "https://d3k8wzt41aflvx.cloudfront.net/RAIHD/Live.m3u8",
+      "source": "iptv-overseas"
+    },
+    {
+      "name": "Rai World Premium",
+      "group": "Unknown",
+      "logo": "",
+      "url": "https://d3k8wzt41aflvx.cloudfront.net/RAIP/Live.m3u8",
+      "source": "iptv-overseas"
+    },
+    {
+      "name": "Mediaset Italia",
+      "group": "Unknown",
+      "logo": "",
+      "url": "https://d3k8wzt41aflvx.cloudfront.net/Mediaset_AU/Live.m3u8",
+      "source": "iptv-overseas"
+    },
+    {
+      "name": "History Hit",
+      "group": "Unknown",
+      "logo": "",
+      "url": "https://lds-timeline-rakuten.amagi.tv/1080p-cc/index.m3u8",
+      "source": "iptv-overseas"
+    },
+    {
+      "name": "Terra Mater WILD",
+      "group": "Unknown",
+      "logo": "",
+      "url": "https://amg01775-amg01775c1-amgplt0343.playout.now3.amagi.tv/playlist/amg01775-amg01775c1-amgplt0343/playlist.m3u8",
+      "source": "iptv-overseas"
+    },
+    {
+      "name": "Court TV",
+      "group": "Unknown",
+      "logo": "",
+      "url": "https://cdn-uw2-prod.tsv2.amagi.tv/linear/amg01438-ewscrippscompan-courttv-tablo/playlist.m3u8",
+      "source": "iptv-overseas"
+    },
+    {
+      "name": "Documentary+",
+      "group": "Unknown",
+      "logo": "",
+      "url": "https://ef79b15c8c7c46c7a9de9d33001dbd07.mediatailor.us-west-2.amazonaws.com/v1/master/ba62fe743df0fe93366eba3a257d792884136c7f/LINEAR-859-DOCUMENTARYPLUS-DOCUMENTARYPLUS/mt/documentaryplus/859/hls/master/playlist.m3u8",
+      "source": "iptv-overseas"
+    },
+    {
+      "name": "InTravel",
+      "group": "Unknown",
+      "logo": "",
+      "url": "https://amg00861-amg00861c10-rakuten-uk-3152.playouts.now.amagi.tv/1080p/index.m3u8",
+      "source": "iptv-overseas"
+    },
+    {
+      "name": "NASA+",
+      "group": "Unknown",
+      "logo": "",
+      "url": "https://ee119c17e6ed643893ff6ae377fe0693.7wzuvg.channel-assembly.mediatailor.us-east-1.amazonaws.com/v1/channel/NASAPrime/NASAPlus.m3u8",
+      "source": "iptv-overseas"
+    },
+    {
+      "name": "Gusto TV",
+      "group": "Unknown",
+      "logo": "",
+      "url": "https://dbrb49pjoymg4.cloudfront.net/10001/99991328/hls/playlist.m3u8?ads.xumo_channelId=99991328",
+      "source": "iptv-overseas"
+    },
+    {
+      "name": "NEWS1",
+      "group": "Unknown",
+      "logo": "",
+      "url": "https://server1.streamssl.com/stream/news1_mid.m3u8",
+      "source": "iptv-overseas"
+    },
+    {
+      "name": "France 24 Español",
+      "group": "Unknown",
+      "logo": "",
+      "url": "https://live.france24.com/hls/live/2037220-b/F24_ES_HI_HLS/master_5000.m3u8",
+      "source": "iptv-overseas"
+    },
+    {
+      "name": "Thai PBS",
+      "group": "Unknown",
+      "logo": "",
+      "url": "https://thaipbs-mcx0wm.cdn.byteark.com/vtt-live/playlist.m3u8",
+      "source": "iptv-overseas"
+    },
+    {
+      "name": "Bloomberg TV Asia",
+      "group": "Unknown",
+      "logo": "",
+      "url": "https://www.bloomberg.com/media-manifest/streams/asia.m3u8",
+      "source": "iptv-overseas"
+    },
+    {
+      "name": "Bloomberg TV Europe",
+      "group": "Unknown",
+      "logo": "",
+      "url": "https://www.bloomberg.com/media-manifest/streams/eu.m3u8",
+      "source": "iptv-overseas"
+    },
+    {
+      "name": "Bloomberg TV US",
+      "group": "Unknown",
+      "logo": "",
+      "url": "https://www.bloomberg.com/media-manifest/streams/us.m3u8",
+      "source": "iptv-overseas"
+    },
+    {
+      "name": "DW English",
+      "group": "Unknown",
+      "logo": "",
+      "url": "https://dwamdstream102.akamaized.net/hls/live/2015525/dwstream102/master.m3u8",
+      "source": "iptv-overseas"
+    },
+    {
+      "name": "TRT World",
+      "group": "Unknown",
+      "logo": "",
+      "url": "https://tv-trtworld.medya.trt.com.tr/master.m3u8",
+      "source": "iptv-overseas"
+    },
+    {
+      "name": "Al Jazeera English",
+      "group": "Unknown",
+      "logo": "",
+      "url": "https://live-hls-web-aje-gcp.thehlive.com/AJE/index.m3u8",
+      "source": "iptv-overseas"
+    },
+    {
+      "name": "Arirang",
+      "group": "Unknown",
+      "logo": "",
+      "url": "https://amdlive-ch01-g-ctnd-com.akamaized.net/arirang_1gch/smil:arirang_1gch.smil/playlist.m3u8",
+      "source": "iptv-overseas"
+    },
+    {
+      "name": "CCTV-1 综合",
+      "group": "国内卫视",
+      "logo": "",
+      "url": "http://example.com/cctv1.m3u8"
+    },
+    {
+      "name": "CCTV-2 财经",
+      "group": "国内卫视",
+      "logo": "",
+      "url": "http://example.com/cctv2.m3u8"
+    },
+    {
+      "name": "CCTV-3 综艺",
+      "group": "国内卫视",
+      "logo": "",
+      "url": "http://example.com/cctv3.m3u8"
+    },
+    {
+      "name": "CCTV-4 国际",
+      "group": "国内卫视",
+      "logo": "",
+      "url": "http://example.com/cctv4.m3u8"
+    },
+    {
+      "name": "CCTV-5 体育",
+      "group": "国内卫视",
+      "logo": "",
+      "url": "http://example.com/cctv5.m3u8"
+    },
+    {
+      "name": "CCTV-6 电影",
+      "group": "影视娱乐",
+      "logo": "",
+      "url": "http://example.com/cctv6.m3u8"
+    },
+    {
+      "name": "CCTV-8 电视剧",
+      "group": "影视娱乐",
+      "logo": "",
+      "url": "http://example.com/cctv8.m3u8"
+    },
+    {
+      "name": "北京卫视",
+      "group": "地方频道",
+      "logo": "",
+      "url": "http://example.com/bjtv.m3u8"
+    },
+    {
+      "name": "上海卫视",
+      "group": "地方频道",
+      "logo": "",
+      "url": "http://example.com/shwtv.m3u8"
+    },
+    {
+      "name": "广东卫视",
+      "group": "地方频道",
+      "logo": "",
+      "url": "http://example.com/gdtv.m3u8"
+    }
+  ]
+}

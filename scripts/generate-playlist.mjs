@@ -2,7 +2,6 @@
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import fetch from 'node-fetch';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const CONFIG_PATH = join(__dirname, '..', 'config', 'sources.json');
@@ -15,6 +14,80 @@ if (!existsSync(OUTPUT_DIR)) {
 
 // Load configuration
 const config = JSON.parse(readFileSync(CONFIG_PATH, 'utf-8'));
+
+// Extra channels to add (user should replace URLs with actual streams)
+const EXTRA_CHANNELS = [
+  {
+    name: 'CCTV-1 综合',
+    groupTitle: '国内卫视',
+    tvgName: 'CCTV-1',
+    tvgLogo: '',
+    url: 'http://example.com/cctv1.m3u8' // REPLACE WITH ACTUAL URL
+  },
+  {
+    name: 'CCTV-2 财经',
+    groupTitle: '国内卫视',
+    tvgName: 'CCTV-2',
+    tvgLogo: '',
+    url: 'http://example.com/cctv2.m3u8' // REPLACE WITH ACTUAL URL
+  },
+  {
+    name: 'CCTV-3 综艺',
+    groupTitle: '国内卫视',
+    tvgName: 'CCTV-3',
+    tvgLogo: '',
+    url: 'http://example.com/cctv3.m3u8' // REPLACE WITH ACTUAL URL
+  },
+  {
+    name: 'CCTV-4 国际',
+    groupTitle: '国内卫视',
+    tvgName: 'CCTV-4',
+    tvgLogo: '',
+    url: 'http://example.com/cctv4.m3u8' // REPLACE WITH ACTUAL URL
+  },
+  {
+    name: 'CCTV-5 体育',
+    groupTitle: '国内卫视',
+    tvgName: 'CCTV-5',
+    tvgLogo: '',
+    url: 'http://example.com/cctv5.m3u8' // REPLACE WITH ACTUAL URL
+  },
+  {
+    name: 'CCTV-6 电影',
+    groupTitle: '影视娱乐',
+    tvgName: 'CCTV-6',
+    tvgLogo: '',
+    url: 'http://example.com/cctv6.m3u8' // REPLACE WITH ACTUAL URL
+  },
+  {
+    name: 'CCTV-8 电视剧',
+    groupTitle: '影视娱乐',
+    tvgName: 'CCTV-8',
+    tvgLogo: '',
+    url: 'http://example.com/cctv8.m3u8' // REPLACE WITH ACTUAL URL
+  },
+  {
+    name: '北京卫视',
+    groupTitle: '地方频道',
+    tvgName: '北京卫视',
+    tvgLogo: '',
+    url: 'http://example.com/bjtv.m3u8' // REPLACE WITH ACTUAL URL
+  },
+  {
+    name: '上海卫视',
+    groupTitle: '地方频道',
+    tvgName: '上海卫视',
+    tvgLogo: '',
+    url: 'http://example.com/shwtv.m3u8' // REPLACE WITH ACTUAL URL
+  },
+  {
+    name: '广东卫视',
+    groupTitle: '地方频道',
+    tvgName: '广东卫视',
+    tvgLogo: '',
+    url: 'http://example.com/gdtv.m3u8' // REPLACE WITH ACTUAL URL
+  }
+];
 
 // Parse M3U content and extract channel info
 function parseM3U(content, sourceName = 'Unknown') {
@@ -120,7 +193,23 @@ function parseM3U(content, sourceName = 'Unknown') {
   return channels;
 }
 
-// Fetch with timeout using AbortController
+// Fetch with timeout using AbortController and retry
+async function fetchWithRetry(url, options = {}, timeout = 30000, maxRetries = 3) {
+  let lastError;
+  for (let attempt = 0; attempt < maxRetries; attempt++) {
+    try {
+      return await fetchWithTimeout(url, options, timeout);
+    } catch (error) {
+      lastError = error;
+      if (attempt < maxRetries - 1) {
+        // Wait before retrying (exponential backoff)
+        await new Promise(resolve => setTimeout(resolve, 1000 * (attempt + 1)));
+      }
+    }
+  }
+  throw lastError;
+}
+
 async function fetchWithTimeout(url, options = {}, timeout = 10000) {
   const controller = new AbortController();
   const id = setTimeout(() => controller.abort(), timeout);
@@ -152,12 +241,12 @@ async function fetchSources() {
     console.log(`Fetching ${sourceId}...`);
     
     try {
-      const response = await fetchWithTimeout(source.url, {
+      const response = await fetchWithRetry(source.url, {
         headers: {
           'User-Agent': config.verification.userAgent,
           'Accept': 'text/plain,application/json,*/*'
         }
-      }, config.verification.timeout);
+      }, config.verification.timeout, 3);
       
       if (!response.ok) {
         console.error(`Failed to fetch ${sourceId}: ${response.status} ${response.statusText}`);
@@ -242,13 +331,29 @@ function generateJSONIndex(channels, sources) {
 async function main() {
   console.log('Starting IPTV playlist generation...');
   
-  const { allChannels, fetchedSources } = await fetchSources();
+  let allChannels = [];
+  let fetchedSources = [];
   
-  if (allChannels.length === 0) {
-    throw new Error('No channels fetched from any source');
+  try {
+    const result = await fetchSources();
+    allChannels = result.allChannels;
+    fetchedSources = result.fetchedSources;
+  } catch (error) {
+    console.error('Failed to fetch sources:', error.message);
+    // Continue with empty allChannels, we'll still add extra channels
   }
   
-  console.log(`\nTotal channels fetched: ${allChannels.length}`);
+  console.log(`\nTotal channels fetched from sources: ${allChannels.length}`);
+  
+  // Add extra channels
+  allChannels.push(...EXTRA_CHANNELS);
+  
+  console.log(`Added ${EXTRA_CHANNELS.length} extra channels. Total: ${allChannels.length}`);
+  
+  // If still no channels, we should at least have extra channels
+  if (allChannels.length === 0) {
+    throw new Error('No channels available even after adding extra channels');
+  }
   
   // Generate M3U playlist
   const m3uContent = generateM3U(allChannels);
