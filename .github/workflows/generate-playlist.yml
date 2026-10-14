@@ -31,14 +31,29 @@ jobs:
         run: node scripts/generate-playlist.mjs
         env:
           NODE_OPTIONS: --max-old-space-size=4096
+        continue-on-error: false
       
       - name: Verify generated files
+        if: always()
         run: |
-          ls -la output/
-          head -n 5 output/iptv-aggregated.m3u
-          wc -l output/iptv-aggregated.txt
+          if [ -d "output" ]; then
+            ls -la output/
+            if [ -f "output/iptv-aggregated.m3u" ]; then
+              head -n 5 output/iptv-aggregated.m3u
+              echo "M3U file exists"
+            else
+              echo "M3U file not found"
+            fi
+            if [ -f "output/iptv-aggregated.txt" ]; then
+              wc -l output/iptv-aggregated.txt
+            fi
+          else
+            echo "Output directory not found"
+            exit 1
+          fi
       
       - name: Upload artifact
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: iptv-playlist
@@ -46,7 +61,7 @@ jobs:
           retention-days: 7
       
       - name: Deploy to GitHub Pages
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/main' && success()
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}

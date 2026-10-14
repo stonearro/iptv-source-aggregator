@@ -70,6 +70,27 @@ function parseM3U(content, sourceName = 'Unknown') {
   return channels;
 }
 
+// Fetch with timeout using AbortController
+async function fetchWithTimeout(url, options = {}, timeout = 10000) {
+  const controller = new AbortController();
+  const id = setTimeout(() => controller.abort(), timeout);
+  
+  try {
+    const response = await fetch(url, {
+      ...options,
+      signal: controller.signal
+    });
+    clearTimeout(id);
+    return response;
+  } catch (error) {
+    clearTimeout(id);
+    if (error.name === 'AbortError') {
+      throw new Error(`Request timeout after ${timeout}ms`);
+    }
+    throw error;
+  }
+}
+
 // Fetch channel info from GitHub raw URL
 async function fetchSources() {
   const allChannels = [];
@@ -81,48 +102,82 @@ async function fetchSources() {
     console.log(`Fetching ${sourceId}...`);
     
     try {
-      const response = await fetch(source.url, {
+      const response = await fetchWithTimeout(source.url, {
         headers: {
           'User-Agent': config.verification.userAgent,
           'Accept': 'text/plain,application/json,*/*'
-        },
-        timeout: config.verification.timeout
-      });
+        }
+      }, config.verification.timeout);
       
       if (!response.ok) {
-        console.error(`  Failed to fetch ${source.url}: ${response.status}`);
-        continue;
-      }
-      
-      const content = await response.text();
-      
-      if (source.type === 'static' && content.includes('#EXTM3U')) {
-        const channels = parseM3U(content, source.description || sourceId);
-        allChannels.push(...channels);
-        fetchedSources.push({
-          id: sourceId,
-          url: source.url,
-          channelCount: channels.length,
-          type: 'm3u'
-        });
-      } else if (source.type === 'dynamic') {
-        // Handle JSON format
-        const data = JSON.parse(content);
-        if (data.sources) {
-          // For dynamic sources, we would need to fetch the actual stream
-          console.log(`  ${sourceId} has ${Object.keys(data.sources).length} source configurations`);
-        }
+        console.error(`  Failed to fetch ${source.url}: ${response.status} ${response.statusText}`);
         fetchedSources.push({
           id: sourceId,
           url: source.url,
           channelCount: 0,
-          type: 'dynamic'
+          type: source.type,
+          error: `HTTP ${response.status}`
+        });
+        continue;
+      }
+      
+      const content = await response.text();
+      let channelCount = 0;
+      
+      if (source.type === 'static' && content.includes('#EXTM3U')) {
+        const channels = parseM3U(content, source.description || sourceId);
+        allChannels.push(...channels);
+        channelCount = channels.length;
+        fetchedSources.push({
+          id: sourceId,
+          url: source.url,
+          channelCount,
+          type: 'm3u'
+        });
+      } else if (source.type === 'dynamic') {
+        // Handle JSON format
+        try {
+          const data = JSON.parse(content);
+          if (data.sources) {
+            console.log(`  ${sourceId} has ${Object.keys(data.sources).length} source configurations`);
+          }
+          fetchedSources.push({
+            id: sourceId,
+            url: source.url,
+            channelCount: 0,
+            type: 'dynamic'
+          });
+        } catch (parseError) {
+          console.error(`  Failed to parse JSON from ${sourceId}: ${parseError.message}`);
+          fetchedSources.push({
+            id: sourceId,
+            url: source.url,
+            channelCount: 0,
+            type: 'dynamic',
+            error: 'JSON parse failed'
+          });
+        }
+      } else {
+        console.warn(`  Unknown source type or invalid content for ${sourceId}`);
+        fetchedSources.push({
+          id: sourceId,
+          url: source.url,
+          channelCount: 0,
+          type: source.type,
+          error: 'Invalid content format'
         });
       }
       
-      console.log(`  Added ${source.type === 'm3u' ? channels.length : 0} channels`);
+      console.log(`  Added ${channelCount} channels`);
     } catch (error) {
       console.error(`  Error fetching ${sourceId}: ${error.message}`);
+      fetchedSources.push({
+        id: sourceId,
+        url: source.url,
+        channelCount: 0,
+        type: source.type,
+        error: error.message
+      });
     }
   }
   
